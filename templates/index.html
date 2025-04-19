@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeopardy Game</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="header">JEOPARDY!</div>
+    <div class="jeopardy-board">
+        <div class="category-row">
+            {% for category in categories %}
+            <div class="category">{{ category }}</div>
+            {% endfor %}
+        </div>
+        {% for value in values %}
+        <div class="question-row">
+            {% for category in categories %}
+            <div class="cell" 
+                data-category="{{ category }}" 
+                data-value="{{ value }}" 
+                data-question="{{ questions[category][value]['question'] }}" 
+                data-answer="{{ questions[category][value]['answer'] }}">
+                {{ value }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    <!-- Modal for question/answer -->
+    <div id="modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <div class="modal-header">
+                <span id="modal-category" class="modal-category"></span>
+                <span id="modal-value" class="modal-value"></span>
+            </div>
+            <div class="modal-body">
+                <p id="modal-question" class="modal-question"></p>
+            </div>
+            <button id="show-answer" class="small-btn">Show Answer</button>
+            <p id="modal-answer" style="display:none;"></p>
+        </div>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>
