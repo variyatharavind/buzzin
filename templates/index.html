@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="header">JEOPARDY!</div>
+    <form id="board-select-form" style="text-align:center; margin-top: 24px;">
+        <label for="board-select" style="font-size:1.1em; color:#fffde7; margin-right:8px;">Choose Board:</label>
+        <select id="board-select" name="board" style="font-size:1.1em; padding:4px 10px; border-radius:6px;">
+            {% for b in board_list %}
+            <option value="{{ b.id }}" {% if b.id == board_id %}selected{% endif %}>{{ b.name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <div class="header">{{ board_name }}</div>
     <div class="jeopardy-board">
         <div class="category-row">
             {% for category in categories %}
@@ -21,13 +29,19 @@
                 data-category="{{ category }}" 
                 data-value="{{ value }}" 
                 data-question="{{ questions[category][value]['question'] }}" 
-                data-answer="{{ questions[category][value]['answer'] }}">
+                data-answer="{{ questions[category][value]['answer'] }}"
+                title="Click to reveal question">
                 {{ value }}
             </div>
             {% endfor %}
         </div>
         {% endfor %}
     </div>
+    <script>
+    document.getElementById('board-select').addEventListener('change', function() {
+        document.getElementById('board-select-form').submit();
+    });
+    </script>
     <!-- Modal for question/answer -->
     <div id="modal" class="modal" style="display:none;">
         <div class="modal-content">

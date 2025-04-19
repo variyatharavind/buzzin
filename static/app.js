@@ -7,6 +7,8 @@ const modalValue = document.getElementById('modal-value');
 const modalQuestion = document.getElementById('modal-question');
 const modalAnswer = document.getElementById('modal-answer');
 
+let currentCell = null;
+
 // Show modal with question
 function showQuestion(cell) {
     modalCategory.textContent = cell.dataset.category;
@@ -19,13 +21,21 @@ function showQuestion(cell) {
 }
 
 document.querySelectorAll('.cell').forEach(cell => {
-    cell.addEventListener('click', () => {
+    cell.addEventListener('click', function() {
+        if (cell.classList.contains('cell-used')) return;
+        currentCell = cell;
         showQuestion(cell);
     });
 });
 
 closeModalBtn.onclick = function() {
     modal.style.display = 'none';
+    if (currentCell) {
+        const mock = document.createElement('div');
+        mock.className = 'cell-mock';
+        currentCell.parentNode.replaceChild(mock, currentCell);
+        currentCell = null;
+    }
 };
 
 showAnswerBtn.onclick = function() {
@@ -36,5 +46,9 @@ showAnswerBtn.onclick = function() {
 window.onclick = function(event) {
     if (event.target === modal) {
         modal.style.display = 'none';
+        if (currentCell) {
+            currentCell.parentNode.removeChild(currentCell);
+            currentCell = null;
+        }
     }
 };
